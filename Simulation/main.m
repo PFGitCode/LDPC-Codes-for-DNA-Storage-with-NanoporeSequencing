@@ -14,3 +14,4 @@ avgError = simulation(matrix_file, channelError, bitDis, testNum, decodeMethod, 
 
 % fileName = "/home/peng/research/DNA_LDPC/simulation/result/"+decodeMethod+"_"+hardOrSoft + modelDimen + "/"+num2str(error*100)+".mat";
 % save(fileName, 'avgError');
+%111
