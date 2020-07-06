@@ -11,7 +11,5 @@ fprintf("%s, %s, channelError: %d, testNum: %d\n",decodeMethod,hardOrSoft, chann
  
 avgError = simulation(matrix_file, channelError, bitDis, testNum, decodeMethod, hardOrSoft);
 
-
-% fileName = "/home/peng/research/DNA_LDPC/simulation/result/"+decodeMethod+"_"+hardOrSoft + modelDimen + "/"+num2str(error*100)+".mat";
-% save(fileName, 'avgError');
-%111
+fileName = "Results/"+decodeMethod+"_"+hardOrSoft + "_"+num2str(channelError*100)+".mat";
+save(fileName, 'avgError');
