@@ -1,6 +1,6 @@
 function avgError = simulation(matrix_file, channelError, bitDis, testNum, decodeMethod, hardOrSoft)
 errorModel = "data/testData" + num2str(channelError)+".mat";
-load(errorModel,'mu','theta','matrix');
+load(errorModel,'mu','matrix'); 
 if hardOrSoft == "hard"
     P = hardError(mu,matrix); % P = [Pac,Pat,Pag,Pct,Pcg,Ptg]
 end
