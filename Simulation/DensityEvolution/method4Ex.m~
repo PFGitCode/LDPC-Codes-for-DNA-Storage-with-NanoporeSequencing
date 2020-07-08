@@ -1,4 +1,4 @@
-function y = method3Ex(func1,func2, ext, P)
+function y = method4Ex(func1,func2, ext, P,bit)
 pA = P(1,:);
 pC = P(2,:);
 pT = P(3,:);
@@ -17,7 +17,7 @@ endDwellCur = 2;
 %     for j = startCur:acc:endDwellCur
 %         yTime = i;
 %         yCurrent = j;
-%         
+%
 %         pdfA = mvnpdf([yTime,yCurrent],muA,mA);
 %         pdfT = mvnpdf([yTime,yCurrent],muT,mT);
 %         pdfC = mvnpdf([yTime,yCurrent],muC,mC);
@@ -41,23 +41,37 @@ endDwellCur = 2;
 % end
 for  i = ext(1):ext(2):-ext(1)
     funPos = round(i/acc)+ edge +1;
-    Lu = pA(funPos) + pG(funPos);
-    Lu1 = pC(funPos) + pT(funPos);
-    if Lu == 0
-                Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
-                Lu1 = pC(2*edge+2 - funPos) + pT(2*edge+2 - funPos);
-%         extrinsic21(funPos) = extrinsic21(funPos) + func2(funPos);
-%         continue;
-    end
-    lu = log(Lu/Lu1);
     sumi2 = i;
-    temp = tanh(0.5*(sumi2))*tanh(0.5*lu);
-    if abs(temp) == 1
-        sumi= 2*19.07*temp;
+    if bit == 1
+        sumi = maxStar(log(pA(funPos))+sumi2, log(pC(funPos))) - maxStar(log(pT(funPos))+sumi2, log(pG(funPos)));
     else
-        sumi = 2*atanh(temp);
+        sumi = maxStar(log(pA(funPos))+sumi2, log(pT(funPos))) - maxStar(log(pC(funPos))+sumi2, log(pG(funPos))); 
     end
-    pos = round(sumi/acc)+ edge +1;
+    
+
+    
+    %     if Lu == 0
+    %         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
+    %         Lu1 = pC(2*edge+2 - funPos) + pT(2*edge+2 - funPos);
+    % %         if bit == 1
+    %             sumi2 = -sumi2;
+    % %         end
+    %         %         extrinsic21(funPos) = extrinsic21(funPos) + func2(funPos);
+    %         %         continue;
+    %     end
+%     lu = log(Lu/Lu1);
+%     temp = tanh(0.5*(sumi2))*tanh(0.5*lu);
+%     if abs(temp) == 1
+%         sumi= 2*19.07*temp;
+%     else
+%         sumi = 2*atanh(temp);
+%     end
+%     %     if bit == 1
+    pos = round(-sumi/acc)+ edge +1;
+    b
+    %     else
+    %         pos = round(-sumi/acc)+ edge +1;
+    %     end
     %     luPos = round(j/acc)+ edge +1;
     %         if Lu == 0
     %         %         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
@@ -108,6 +122,15 @@ if llr > (2*edge+1)
     llr = 2*edge+1;
 elseif llr < 1
     llr = 1;
+end
+function s = maxStar(x1,x2)
+x = [x1,x2];
+y = max(x1,x2);
+x = bsxfun(@minus,x,y);
+s = y + log(sum(exp(x)));
+i = find(~isfinite(y));
+if ~isempty(i)
+    s(i) = y(i);
 end
 end
 

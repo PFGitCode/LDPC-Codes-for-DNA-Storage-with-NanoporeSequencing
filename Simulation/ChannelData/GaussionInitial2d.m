@@ -1,5 +1,6 @@
 clear
-for r = 1.01:0.01:1.1
+addpath('ChannelData/data');
+for r = 1.11:0.01:1.5
     muA = [0.5,0.62];
     muC = [0.06,0.31];
     muT = [0.09,0.49];

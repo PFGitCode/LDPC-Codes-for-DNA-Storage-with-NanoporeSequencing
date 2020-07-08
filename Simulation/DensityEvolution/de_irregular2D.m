@@ -1,4 +1,4 @@
-function result_pe1 = de_irregular2D(chan1,chan2,iter,ext,mapping,stop_pe,vard,chkd,dv,dc,LuLLR)
+function result_pe1 = de_irregular2D(chan1,chan2,iter,ext,mapping,stop_pe,vard,chkd,dv,dc,P1,P2,decodeMethod)
 z1 = chan1;
 z2 = chan2;
 % Node average for the extrisic info
@@ -55,11 +55,11 @@ while ((c < iter) & (pe1 > stop_pe)& (pe2 > stop_pe))
         end
     end
     if decodeMethod == "method3"
-        z1 = method3Ex(xvar_ave1,xvar_aveEX2,ext,LuLLR);
-        z2 = method3Ex(xvar_ave2,xvar_aveEX1,ext,LuLLR);
+        z1 = method3Ex(xvar_ave1,xvar_aveEX2,ext,P1,1);
+        z2 = method3Ex(xvar_ave2,xvar_aveEX1,ext,P2,2);
     elseif decodeMethod == "method4"
-        z1 = method4Ex(xvar_ave1,xvar_aveEX2,ext,LuLLR);
-        z2 = method4Ex(xvar_ave2,xvar_aveEX1,ext,LuLLR);
+        z1 = method4Ex(xvar_ave1,xvar_aveEX2,ext,P1,1);
+        z2 = method4Ex(xvar_ave2,xvar_aveEX1,ext,P2,2);
     end
     %     z1=xvar_ave1;
     %     z2=xvar_ave2;
