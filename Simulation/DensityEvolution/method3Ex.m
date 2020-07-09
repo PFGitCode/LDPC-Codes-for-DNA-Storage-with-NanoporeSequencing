@@ -1,4 +1,4 @@
-function y = method3Ex(func1,func2, ext, P,bit)
+function y = method3Ex(func1,func2, ext, P)
 pA = P(1,:);
 pC = P(2,:);
 pT = P(3,:);
@@ -43,7 +43,7 @@ for  i = ext(1):ext(2):-ext(1)
     funPos = round(i/acc)+ edge +1;
     Lu = pA(funPos) + pG(funPos);
     Lu1 = pC(funPos) + pT(funPos);
-    sumi2 = i;
+    sumi2 = -i;
 %     if Lu == 0
 %         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
 %         Lu1 = pC(2*edge+2 - funPos) + pT(2*edge+2 - funPos);
@@ -61,7 +61,7 @@ for  i = ext(1):ext(2):-ext(1)
         sumi = 2*atanh(temp);
     end
 %     if bit == 1
-        pos = round(-sumi/acc)+ edge +1;
+        pos = round(sumi/acc)+ edge +1;
 %     else
 %         pos = round(-sumi/acc)+ edge +1;
 %     end
@@ -74,7 +74,8 @@ for  i = ext(1):ext(2):-ext(1)
     %     end
     extrinsic21(pos) = extrinsic21(pos) + func2(funPos);
 end
-
+% extrinsic21 = extrinsic21*0.5;
+% extrinsic21(edge+1) = extrinsic21(edge+1) + 0.5;
 zeropad1 = zeros(1,sf1 + sf1);
 zeropad2 = zeropad1;
 

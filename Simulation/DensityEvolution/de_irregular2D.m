@@ -18,7 +18,7 @@ pe2 = 0.5;
 result_pe1 = zeros(1,iter);
 result_pe2 = zeros(1,iter);
 round(0.3);
-while ((c < iter) & (pe1 > stop_pe)& (pe2 > stop_pe))
+while ((c < iter) && ((pe1 > stop_pe)|| (pe2 > stop_pe)))
     c = c + 1;
     y_ave1=0;
     y_ave2=0;
@@ -54,15 +54,22 @@ while ((c < iter) & (pe1 > stop_pe)& (pe2 > stop_pe))
             xvar_ave2=xvar_ave2+vard(j)*z2;
         end
     end
-    if decodeMethod == "method3"
-        z1 = method3Ex(xvar_ave1,xvar_aveEX2,ext,P1,1);
-        z2 = method3Ex(xvar_ave2,xvar_aveEX1,ext,P2,2);
+    if decodeMethod == "method1"
+        z1 = method1Ex(xvar_ave1,xvar_aveEX2,ext);
+        z2 = method1Ex(xvar_ave2,xvar_aveEX1,ext);
+    elseif decodeMethod == "method2"
+        z1 = method2Ex(xvar_ave1,xvar_aveEX2,ext,P2,1);
+        z2 = method2Ex(xvar_ave2,xvar_aveEX1,ext,P1,2);
+    elseif decodeMethod == "method3"
+        z1 = method3Ex(xvar_ave1,xvar_aveEX2,ext,P2);
+        z2 = method3Ex(xvar_ave2,xvar_aveEX1,ext,P1);
     elseif decodeMethod == "method4"
         z1 = method4Ex(xvar_ave1,xvar_aveEX2,ext,P1,1);
         z2 = method4Ex(xvar_ave2,xvar_aveEX1,ext,P2,2);
+    elseif decodeMethod == "baseline"
+        z1=xvar_ave1;
+        z2=xvar_ave2;
     end
-    %     z1=xvar_ave1;
-    %     z2=xvar_ave2;
     pe1 = sum(z1(1:round((ext(3)-1)/2 )))*ext(2);
     pe2 = sum(z2(1:round((ext(3)-1)/2 )))*ext(2);
     result_pe1(c) = pe1;
