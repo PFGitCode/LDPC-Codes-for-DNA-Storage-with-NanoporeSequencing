@@ -1,4 +1,4 @@
-function avgError = simulation(matrix_file, channelError, bitDis, testNum, decodeMethod, hardOrSoft)
+function [avgError,avgTime] = simulation(matrix_file, channelError, bitDis, testNum, decodeMethod, hardOrSoft)
 errorModel = "data/testData" + num2str(channelError)+".mat";
 load(errorModel,'mu','matrix'); 
 if hardOrSoft == "hard"
@@ -84,6 +84,7 @@ for iter = 1:testNum
     end
 end
 avgError = sumError/testNum;
+avgTime = runningTime/testNum;
 end
 
 
