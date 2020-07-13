@@ -77,44 +77,34 @@ for i = startDwellTime:acc:endDwellTime
         nlr2 = round(-llr2/acc) + edge +1;
         nlr2 = bound(nlr2, edge);
         
-        %         lrlu = round(llr_lu/acc) + edge +1;
-        %         lrlu = bound(lrlu, edge);
-        %         nlrlu = round(-llr_lu/acc) + edge +1;
-        %         nlrlu = bound(nlrlu, edge);
-        %         if(abs(lr1) > 2*edge+1 || lr1 < 1 || abs(lr2) > 2*edge+1 || lr2 < 1)
-        %             continue;
-        %         end
         pro = pro + (pdfA + pdfC + pdfT + pdfG)*acc^2/4;
         chan1(lr1) = chan1(lr1) + (pdfA + pdfC)*acc^2/4;
         chan1(nlr1) = chan1(nlr1) + (pdfT + pdfG)*acc^2/4;
         chan2(lr2) = chan2(lr2) + (pdfA + pdfT)*acc^2/4;
         chan2(nlr2) = chan2(nlr2) + (pdfC + pdfG)*acc^2/4;
+        
         p1A(lr1) =  pdfA;
         p1C(lr1) =  pdfC;
         p1T(lr1) =  pdfT;
         p1G(lr1) =  pdfG;
-%         p1A(nlr1) =  pdfA;
-%         p1C(nlr1) =  pdfC;
-%         p1T(nlr1) =  pdfT;
-%         p1G(nlr1) =  pdfG;
-                p1A(nlr1) =  pdfG;
-                p1C(nlr1) =  pdfT;
-                p1T(nlr1) = pdfC;
-                p1G(nlr1) =  pdfA;
-        
-        
+
+        p1A(nlr1) =  pdfG;
+        p1C(nlr1) =  pdfT;
+        p1T(nlr1) = pdfC;
+        p1G(nlr1) =  pdfA;
+          
         p2A(lr2) =  pdfA;
         p2C(lr2) =  pdfC;
         p2T(lr2) =  pdfT;
         p2G(lr2) =  pdfG;
-%         p2A(nlr2) =  pdfA;
-%         p2C(nlr2) =  pdfC;
-%         p2T(nlr2) =  pdfT;
-%         p2G(nlr2) =  pdfG;
-                p2A(nlr2) =  pdfG;
-                p2C(nlr2) = pdfT;
-                p2T(nlr2) =  pdfC;
-                p2G(nlr2) =  pdfA;
+        %         p2A(nlr2) =  pdfA;
+        %         p2C(nlr2) =  pdfC;
+        %         p2T(nlr2) =  pdfT;
+        %         p2G(nlr2) =  pdfG;
+        p2A(nlr2) =  pdfG;
+        p2C(nlr2) = pdfT;
+        p2T(nlr2) =  pdfC;
+        p2G(nlr2) =  pdfA;
         %         chan_lu(lrlu) = chan_lu(lrlu) + (pdfA + pdfG)*acc^2/4;
         %         chan_lu(nlrlu) = chan_lu(nlrlu) + (pdfC + pdfT)*acc^2/4;
         

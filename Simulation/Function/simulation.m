@@ -1,9 +1,14 @@
-function [avgError,avgTime] = simulation(matrix_file, channelError, bitDis, testNum, decodeMethod, hardOrSoft)
+function [avgError,avgTime] = simulation(matrix_file, channelError, bitDis, testNum, decodeMethod, hardOrSoft, alpha)
 errorModel = "data/testData" + num2str(channelError)+".mat";
-load(errorModel,'mu','matrix'); 
+load(errorModel,'mu','matrix');
 if hardOrSoft == "hard"
-    P = hardError(mu,matrix); % P = [Pac,Pat,Pag,Pct,Pcg,Ptg]
+    P = hardError(mu,matrix);% P = [Pac,Pat,Pag,Pct,Pcg,Ptg]
+    if alpha > 0
+        lamda = sum(P)/(5+alpha);
+        P = [lamda,lamda,lamda,alpha*lamda,lamda,lamda];
+    end
 end
+
 
 if  decodeMethod == "quater"
     load(matrix_file, 'H', 'g'); % get parity matrix H1, H2

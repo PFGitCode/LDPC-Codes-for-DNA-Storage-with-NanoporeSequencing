@@ -1,9 +1,9 @@
-function decodeWord = quaternaryDecoder(receivedData,H,P,nonZerosElements,ss)
+function decodeWord = quaternaryDecoder(receivedData,H,P,nonZerosElements,ss) % P = [Pac,Pat,Pag,Pct,Pcg,Ptg]
 Pac = P(1);
 Pat = P(2);
 Pag = P(3);
-Pcg = P(4);
-Pct = P(5);
+Pct = P(4);
+Pcg = P(5);
 Ptg = P(6);
 
 [n,k] = size(H');
