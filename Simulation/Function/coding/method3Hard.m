@@ -107,7 +107,7 @@ for iter = 1:50
         break;
     end
     %-------------variable to check message------------------------------------
-    for i = 1:n/2
+    for i = 1:n
         nonZerosElementi1 = find(H1(:,i)~=0);
         nonZerosElementi2 = find(H2(:,i)~=0);
         sumi1 = sum(Lr1(:,i));
@@ -125,7 +125,7 @@ for iter = 1:50
             sumi12 = 2*atanh(tanh(0.5*(sumi1))*tanh(0.5*log((Lu2)/(1-Lu2))));
             
             Lq1(nonZerosElementi1,i) = Lq1(nonZerosElementi1,i)+sumi21;
-            Lq2(nonZerosElementi2,i) =Lq2(nonZerosElementi2,i)+sumi12;
+            Lq2(nonZerosElementi2,i) = Lq2(nonZerosElementi2,i)+sumi12;
 %         elseif (receivedSignal(i) == 3)
 %             sumi21 = 2*atanh(tanh(0.5*(sumi2))*tanh(0.5*log((Lu3)/(1-Lu3))));
 %             sumi12 = 2*atanh(tanh(0.5*(sumi1))*tanh(0.5*log((Lu3)/(1-Lu3))));
