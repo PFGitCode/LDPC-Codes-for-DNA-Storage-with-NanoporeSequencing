@@ -70,10 +70,15 @@ for iter = 1:testNum
         llr = GaussianLLR2D(receivedSignalTime,receivedSignalCurrent,mu,matrix);
     end
     if  decodeMethod == "method4"
-        [bireceivedBits1, bireceivedBits2]= Method4Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
+        [bireceivedBits1, bireceivedBits2]= method4Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
+    elseif decodeMethod == "method2"
+        [bireceivedBits1, bireceivedBits2]= method2Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
+    elseif decodeMethod == "method3"
+        [bireceivedBits1, bireceivedBits2]= method3Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
     elseif decodeMethod == "quater"
         receivedBits = quaternaryDecoder(receivedSignal,H,P,nonZerosElements,s);
     end
+    
     if decodeMethod ~= "quater"
         receivedBits = bi2quaternary(bireceivedBits1,bireceivedBits2);
     end
