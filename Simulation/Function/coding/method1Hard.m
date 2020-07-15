@@ -3,17 +3,7 @@
 %1.Channel code classical and Modern by William E.Ryan and Shu Lin
 %Chapter5.4
 %2. Maltab Document https://www.mathworks.com/help/comm/ref/ldpcdecoder.html
-function [data1,data2] = method3Hard(llr1,llr2, H1,H2,receivedSignal,P)
-Pac = P(1);
-Pat = P(2);
-Pag = P(3);
-Pct = P(4);
-Pcg = P(5);
-Ptg = P(6);
-
-Lu1 = (Pac + Pcg);
-Lu2 = (Pat + Ptg);
-
+function [data1,data2] = method1Hard(llr1,llr2, H1,H2,receivedSignal)
 [k, n] = size(H1);
 data1 = zeros(n,1);
 data2 = zeros(n,1);
@@ -26,6 +16,7 @@ Lr2 = zeros(k,n);
 LQ1 = zeros(n,1);
 LQ2 = zeros(n,1);
 
+alpha = 0.1;
 for i = 1:length(llr1)
     p1(i) = llr1(i);
     p2(i) = llr2(i);
@@ -63,16 +54,9 @@ for iter = 1:50
         sumi2 = sum(Lr2(:,i));
         LQ1(i) = p1(i) + sum(Lr1(:,i));
         LQ2(i) = p2(i) + sum(Lr2(:,i));
-        if (receivedSignal(i) == 1)
-            sumi21 = 2*atanh(tanh(0.5*(sumi2))*tanh(0.5*log((Lu1)/(1-Lu1))));
-            sumi12 = 2*atanh(tanh(0.5*(sumi1))*tanh(0.5*log((Lu1)/(1-Lu1))));
-            LQ1(i) = LQ1(i)+sumi21;
-            LQ2(i) = LQ2(i)+sumi12;
-        elseif (receivedSignal(i) == 2)
-            sumi21 = 2*atanh(tanh(0.5*(sumi2))*tanh(0.5*log((Lu2)/(1-Lu2))));
-            sumi12 = 2*atanh(tanh(0.5*(sumi1))*tanh(0.5*log((Lu2)/(1-Lu2))));
-            LQ1(i) = LQ1(i)+sumi21;
-            LQ2(i) = LQ2(i)+sumi12;
+        if (receivedSignal(i) == 1||receivedSignal(i) == 2)
+            LQ1(i) = LQ1(i) - alpha*(sumi2);
+            LQ2(i) =  LQ2(i) - alpha*(sumi1);
         end
         data1(i) = LQ1(i) < 0;
         data2(i) = LQ2(i) < 0;
@@ -100,25 +84,11 @@ for iter = 1:50
         sumi2 = sum(Lr2(:,i));
         Lq1(nonZerosElementi1,i) = p1(i)+sumi1- Lr1(nonZerosElementi1,i) + 1.0e-10;
         Lq2(nonZerosElementi2,i) = p2(i)+sumi2- Lr2(nonZerosElementi2,i) + 1.0e-10;
-        if (receivedSignal(i) == 1)
-            sumi21 = 2*atanh(tanh(0.5*(sumi2))*tanh(0.5*log((Lu1)/(1-Lu1))));
-            sumi12 = 2*atanh(tanh(0.5*(sumi1))*tanh(0.5*log((Lu1)/(1-Lu1))));
-
-            Lq1(nonZerosElementi1,i) = Lq1(nonZerosElementi1,i)+sumi21;
-            Lq2(nonZerosElementi2,i) = Lq2(nonZerosElementi2,i)+sumi12;
-        elseif (receivedSignal(i) == 2)
-            sumi21 = 2*atanh(tanh(0.5*(sumi2))*tanh(0.5*log((Lu2)/(1-Lu2))));
-            sumi12 = 2*atanh(tanh(0.5*(sumi1))*tanh(0.5*log((Lu2)/(1-Lu2))));
-
-            Lq1(nonZerosElementi1,i) = Lq1(nonZerosElementi1,i)+sumi21;
-            Lq2(nonZerosElementi2,i) = Lq2(nonZerosElementi2,i)+sumi12;
+        if (receivedSignal(i) == 1||receivedSignal(i) == 2)
+            Lq1(nonZerosElementi1,i) = Lq1(nonZerosElementi1,i) - alpha*(sumi2);
+            Lq2(nonZerosElementi2,i) = Lq2(nonZerosElementi2,i) - alpha*(sumi1);
         end
     end
 end
 end
-
-
-
-
-
 

@@ -69,12 +69,7 @@ for iter = 1:testNum
         receivedSignal = [receivedSignalTime; receivedSignalCurrent];
         llr = GaussianLLR2D(receivedSignalTime,receivedSignalCurrent,mu,matrix);
     end
-    if decodeMethod == "baseline"
-%         hDec1 = comm.LDPCDecoder(sparse(H1));
-%         hDec2 = comm.LDPCDecoder(sparse(H2));
-%         bireceivedBits1 = step(hDec1, llr(1:n));
-%         bireceivedBits2 = step(hDec2, llr(n+1:end));
-        [bireceivedBits1, bireceivedBits2]= baseline(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
+    if decodeMethod == "method9"
     elseif decodeMethod == "method1"
         [bireceivedBits1, bireceivedBits2]= method1Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
     elseif decodeMethod == "method2"
