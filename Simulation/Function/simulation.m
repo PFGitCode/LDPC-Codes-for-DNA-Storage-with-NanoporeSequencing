@@ -64,28 +64,48 @@ for iter = 1:testNum
     if hardOrSoft == "hard"
         receivedSignal = hardChannel(double(encodedData), P);
         llr = hardLLR(receivedSignal, P);
-    elseif hardOrSoft == "soft" && modelDimen == "2D"
+        
+        if decodeMethod == "baseline"
+            %         hDec1 = comm.LDPCDecoder(sparse(H1));
+            %         hDec2 = comm.LDPCDecoder(sparse(H2));
+            %         bireceivedBits1 = step(hDec1, llr(1:n));
+            %         bireceivedBits2 = step(hDec2, llr(n+1:end));
+            [bireceivedBits1, bireceivedBits2]= baseline(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
+        elseif decodeMethod == "method1"
+            [bireceivedBits1, bireceivedBits2]= method1Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
+        elseif decodeMethod == "method2"
+            [bireceivedBits1, bireceivedBits2]= method2Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
+        elseif decodeMethod == "method3"
+            [bireceivedBits1, bireceivedBits2]= method3Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
+        elseif  decodeMethod == "method4"
+            [bireceivedBits1, bireceivedBits2]= method4Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
+        elseif decodeMethod == "quater"
+            receivedBits = quaternaryDecoder(receivedSignal,H,P,nonZerosElements,s);
+        end
+        
+    elseif hardOrSoft == "soft"
         [receivedSignalTime, receivedSignalCurrent] = GaussianChannel2D(double(encodedData),mu,matrix);
         receivedSignal = [receivedSignalTime; receivedSignalCurrent];
         llr = GaussianLLR2D(receivedSignalTime,receivedSignalCurrent,mu,matrix);
+        if decodeMethod == "baseline"
+            %         hDec1 = comm.LDPCDecoder(sparse(H1));
+            %         hDec2 = comm.LDPCDecoder(sparse(H2));
+            %         bireceivedBits1 = step(hDec1, llr(1:n));
+            %         bireceivedBits2 = step(hDec2, llr(n+1:end));
+            [bireceivedBits1, bireceivedBits2]= baseline(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
+        elseif decodeMethod == "method1"
+            [bireceivedBits1, bireceivedBits2]= method1Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
+        elseif decodeMethod == "method2"
+            [bireceivedBits1, bireceivedBits2]= method2Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
+        elseif decodeMethod == "method3"
+            [bireceivedBits1, bireceivedBits2]= method3Soft(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,mu,matrix);
+        elseif  decodeMethod == "method4"
+            [bireceivedBits1, bireceivedBits2]= method4Soft(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,mu,matrix);
+        elseif decodeMethod == "quater"
+            receivedBits = quaternaryDecoderSoft(receivedSignal,H,mu,matrix,nonZerosElements,s);
+        end
     end
-    if decodeMethod == "baseline"
-%         hDec1 = comm.LDPCDecoder(sparse(H1));
-%         hDec2 = comm.LDPCDecoder(sparse(H2));
-%         bireceivedBits1 = step(hDec1, llr(1:n));
-%         bireceivedBits2 = step(hDec2, llr(n+1:end));
-        [bireceivedBits1, bireceivedBits2]= baseline(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
-    elseif decodeMethod == "method1"
-        [bireceivedBits1, bireceivedBits2]= method1Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
-    elseif decodeMethod == "method2"
-        [bireceivedBits1, bireceivedBits2]= method2Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
-    elseif decodeMethod == "method3"
-        [bireceivedBits1, bireceivedBits2]= method3Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
-    elseif  decodeMethod == "method4"
-        [bireceivedBits1, bireceivedBits2]= method4Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,P);
-    elseif decodeMethod == "quater"
-        receivedBits = quaternaryDecoder(receivedSignal,H,P,nonZerosElements,s);
-    end
+
     
     if decodeMethod ~= "quater"
         receivedBits = bi2quaternary(bireceivedBits1,bireceivedBits2);
@@ -94,12 +114,12 @@ for iter = 1:testNum
     runningTime = runningTime +toc;
     error = sum(double(rawData) - double(receivedBits(1:strlen))~=0)/strlen;
     sumError = sumError+error;
-    if error > 0
-        fprintf("%s, %s: %d\n",decodeMethod,hardOrSoft,iter);
-        avgError = sumError/iter;
-        avgTime = runningTime/iter;
-        fprintf("error rate: %f,%f, %f\n",channelError,avgError, avgTime);
-    end
+    %     if error > 0
+    fprintf("%s, %s: %d\n",decodeMethod,hardOrSoft,iter);
+    avgError = sumError/iter;
+    avgTime = runningTime/iter;
+    fprintf("error rate: %f,%f, %f\n",channelError,avgError, avgTime);
+    %     end
 end
 avgError = sumError/testNum;
 avgTime = runningTime/testNum;

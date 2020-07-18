@@ -3,7 +3,7 @@
 %1.Channel code classical and Modern by William E.Ryan and Shu Lin
 %Chapter5.4
 %2. Maltab Document https://www.mathworks.com/help/comm/ref/ldpcdecoder.html
-function data = Method4Soft(llr, H,receivedSignal,mu,matrix)
+function [data1,data2] = method4Soft(llr1,llr2, H1,H2,receivedSignal,mu,matrix)
 muA = mu(1:2);
 muC = mu(3:4);
 muT = mu(5:6);
@@ -14,24 +14,31 @@ mC = matrix(:,3:4);
 mT = matrix(:,5:6);
 mG = matrix(:,7:8);
 
-[k, n] = size(H);
-data = zeros(n,1);
-p = zeros(n,1);
-Lq = zeros(k,n);
-Lr = zeros(k,n);
-LQ = zeros(n,1);
+[k, n] = size(H1);
+data1 = zeros(n,1);
+data2 = zeros(n,1);
+p1 = zeros(n,1);
+p2 = zeros(n,1);
+Lq1 = zeros(k,n);
+Lq2 = zeros(k,n);
+Lr1 = zeros(k,n);
+Lr2 = zeros(k,n);
+LQ1 = zeros(n,1);
+LQ2 = zeros(n,1);
 
-pdfA = zeros(1,length(llr)/2);
-pdfT = zeros(1,length(llr)/2);
-pdfC = zeros(1,length(llr)/2);
-pdfG = zeros(1,length(llr)/2);
+pdfA = zeros(1,length(llr1));
+pdfT = zeros(1,length(llr1));
+pdfC = zeros(1,length(llr1));
+pdfG = zeros(1,length(llr1));
 
-for i = 1:length(llr)
-    p(i) = llr(i);%llr of p0 and p1
-    Lq(H(:,i)==1,i) = p(i);%initial variabl to check
+for i = 1:length(llr1)
+    p1(i) = llr1(i);%llr of p0 and p1
+    p2(i) = llr2(i);%llr of p0 and p1
+    Lq1(H1(:,i)==1,i) = p1(i);%initial variabl to check
+    Lq2(H2(:,i)==1,i) = p2(i);%initial variabl to check
 end
 
-for i = 1:length(llr)/2
+for i = 1:length(llr1)
     pdfA(i) = mvnpdf(receivedSignal(:,i)',muA,mA);
     pdfC(i) = mvnpdf(receivedSignal(:,i)',muC,mC);
     pdfT(i) = mvnpdf(receivedSignal(:,i)',muT,mT);
@@ -41,52 +48,68 @@ end
 for iter = 1:50
     %---------------------message from checl to variable----------
     for j = 1:k
-        nonZerosElement = find(H(j,:)~=0);
-        sumj = prod(tanh(0.5*Lq(j,nonZerosElement)));
-        temp = sumj./(tanh(0.5.*Lq(j,nonZerosElement)));
-        for t = 1:length(temp)
-            if abs(temp(t)) == 1
-                Lr(j,nonZerosElement(t)) = 2*19.07*temp(t);
+        nonZerosElement1 = find(H1(j,:)~=0);
+        nonZerosElement2 = find(H2(j,:)~=0);
+        sumj1 = prod(tanh(0.5*Lq1(j,nonZerosElement1)));
+        sumj2 = prod(tanh(0.5*Lq2(j,nonZerosElement2)));
+        temp1 = sumj1./(tanh(0.5.*Lq1(j,nonZerosElement1)));
+        temp2 = sumj2./(tanh(0.5.*Lq2(j,nonZerosElement2)));
+        for t = 1:length(temp1)
+            if abs(temp1(t)) == 1
+                Lr1(j,nonZerosElement1(t)) = 2*19.07*temp1(t);
             else
-                Lr(j,nonZerosElement(t)) = 2*atanh(temp(t));
+                Lr1(j,nonZerosElement1(t)) = 2*atanh(temp1(t));
+            end
+        end
+        for t = 1:length(temp2)
+            if abs(temp2(t)) == 1
+                Lr2(j,nonZerosElement2(t)) = 2*19.07*temp2(t);
+            else
+                Lr2(j,nonZerosElement2(t)) = 2*atanh(temp2(t));
             end
         end
     end
     %---------get the codeword and check if it is right(H*data=0)-----------
-    for i = 1:n/2
-        sumi1 = sum(Lr(:,i));
-        sumi2 = sum(Lr(:,i+n/2));
-        LQ(i) = sumi1;
-        LQ(i + n/2) = sumi2;
+    for i = 1:n
+        sumi1 = sum(Lr1(:,i));
+        sumi2 = sum(Lr2(:,i));
+        LQ1(i) = sumi1 ;
+        LQ2(i) = sumi2;
         sumi21 = maxStar(log(pdfA(i))+sumi2, log(pdfC(i))) - maxStar(log(pdfT(i))+sumi2, log(pdfG(i)));
         sumi12 = maxStar(log(pdfA(i))+sumi1, log(pdfT(i))) - maxStar(log(pdfC(i))+sumi1, log(pdfG(i)));
-        LQ(i) = LQ(i)+sumi21;
-        LQ(i + n/2) = LQ(i + n/2)+sumi12;
-        data(i) = LQ(i) < 0;
-        data(i+n/2) = LQ(i+n/2) < 0;
+        LQ1(i) = LQ1(i)+sumi21;
+        LQ2(i) = LQ2(i)+sumi12;
+        data1(i) = LQ1(i) < 0;
+        data2(i) = LQ2(i) < 0;
     end
-    re = H*data;
-    ifend = 1;
-    for i = 1:length(re)
-        if(mod(re(i),2) == 1)
-            ifend = 0;
+    
+    re1 = H1*data1;
+    re2 = H2*data2;
+    ifend1 = 1;
+    ifend2 = 1;
+    for i = 1:length(re1)
+        if(mod(re1(i),2) == 1)
+            ifend1 = 0;
+        end
+        if(mod(re2(i),2) == 1)
+            ifend2 = 0;
         end
     end
-    if(ifend)
+    if(ifend1&&ifend2)
         break;
     end
     %-------------variable to check message------------------------------------
-    for i = 1:n/2
-        nonZerosElementi1 = find(H(:,i)~=0);
-        nonZerosElementi2 = find(H(:,i+n/2)~=0);
-        sumi1 = sum(Lr(:,i));
-        sumi2 = sum(Lr(:,i+n/2));
-        Lq(nonZerosElementi1,i) = sumi1 - Lr(nonZerosElementi1,i)+1.0e-10;
-        Lq(nonZerosElementi2,i+n/2) = sumi2 - Lr(nonZerosElementi2,i+n/2)+1.0e-10;
+    for i = 1:n
+        nonZerosElementi1 = find(H1(:,i)~=0);
+        nonZerosElementi2 = find(H2(:,i)~=0);
+        sumi1 = sum(Lr1(:,i));
+        sumi2 = sum(Lr2(:,i));
+        Lq1(nonZerosElementi1,i) = sumi1 - Lr1(nonZerosElementi1,i);
+        Lq2(nonZerosElementi2,i) = sumi2 - Lr2(nonZerosElementi2,i);
         sumi21 = maxStar(log(pdfA(i))+sumi2, log(pdfC(i))) - maxStar(log(pdfT(i))+sumi2, log(pdfG(i)));
         sumi12 = maxStar(log(pdfA(i))+sumi1, log(pdfT(i))) - maxStar(log(pdfC(i))+sumi1, log(pdfG(i)));
-        Lq(nonZerosElementi1,i) = Lq(nonZerosElementi1,i)+sumi21;
-        Lq(nonZerosElementi2,i+n/2) = Lq(nonZerosElementi2,i+n/2)+sumi12;
+        Lq1(nonZerosElementi1,i) = Lq1(nonZerosElementi1,i)+sumi21;
+        Lq2(nonZerosElementi2,i) = Lq2(nonZerosElementi2,i)+sumi12;
     end
 end
 end

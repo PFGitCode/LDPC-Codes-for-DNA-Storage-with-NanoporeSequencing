@@ -78,8 +78,8 @@ for iter = 1:50
     for i = 1:n
         sumi1 = sum(Lr1(:,i));
         sumi2 = sum(Lr2(:,i));
-        LQ1(i) = sumi1 ;
-        LQ2(i) =  sumi2;
+        LQ1(i) = p1(i) + sumi1 ;
+        LQ2(i) = p2(i) + sumi2;
         if(receivedSignal(i) == 1)
             sumi21 = maxStar(log(P00c)+sumi2, log(P01c)) - maxStar(log(P10c)+sumi2, log(P11c));
             sumi12 = maxStar(log(P00c)+sumi1, log(P10c)) - maxStar(log(P01c)+sumi1, log(P11c));
@@ -119,8 +119,8 @@ for iter = 1:50
         nonZerosElementi2 = find(H2(:,i)~=0);
         sumi1 = sum(Lr1(:,i));
         sumi2 = sum(Lr2(:,i));
-        Lq1(nonZerosElementi1,i) = sumi1 - Lr1(nonZerosElementi1,i)+1.0e-10;
-        Lq2(nonZerosElementi2,i) = sumi2 - Lr2(nonZerosElementi2,i)+1.0e-10;
+        Lq1(nonZerosElementi1,i) = p1(i) + sumi1 - Lr1(nonZerosElementi1,i)+1.0e-10;
+        Lq2(nonZerosElementi2,i) = p2(i) + sumi2 - Lr2(nonZerosElementi2,i)+1.0e-10;
         if(receivedSignal(i) == 1)
             sumi21 = maxStar(log(P00c)+sumi2, log(P01c)) - maxStar(log(P10c)+sumi2, log(P11c));
             sumi12 = maxStar(log(P00c)+sumi1, log(P10c)) - maxStar(log(P01c)+sumi1, log(P11c));

@@ -8,19 +8,25 @@ Ptg = P(6);
 
 n = length(r);
 llr = zeros(2*n,1);
+
+Paa = 1 - Pac - Pat - Pag;
+Pcc = 1 - Pac - Pcg - Pct;
+Ptt = 1 - Pat - Ptg - Pct;
+Pgg = 1 - Pag - Pcg - Ptg;
+
 for i = 1:n
     if(r(i) == 1)
-        llr(i) = log((1-Pcg-Pct)/(Pcg+Pct));
-        llr(i+n) = log((Pac+Pct)/(1-Pac-Pct));
+        llr(i) = log((Pac + Pcc)/(Pcg + Pct));
+        llr(i+n) = log((Pac + Pct)/(Pcg + Pcc));
     elseif(r(i) == 2)
-        llr(i) = log((Pat+Pct)/(1-Pat-Pct));
-        llr(i+n) = log((1-Ptg-Pct)/(Ptg+Pct));
+        llr(i) = log((Pat + Pct)/(Ptg + Ptt));
+        llr(i+n) = log((Pat + Ptt)/(Ptg + Pct));
     elseif(r(i) == 3)
-        llr(i) = log((Pcg+Pag)/(1-Pcg-Pag));
-        llr(i+n) = log((Ptg+Pag)/(1-Ptg-Pag));
+        llr(i) = log((Pag + Pcg)/(Pgg + Ptg));
+        llr(i+n) = log((Pag + Ptg)/(Pgg + Pcg));
     elseif(r(i) == 0)
-        llr(i) = log((1-Pat-Pag)/(Pat+Pag));
-        llr(i+n) = log((1-Pac-Pag)/(Pac+Pag));
+        llr(i) = log((Paa + Pac)/(Pag + Pat));
+        llr(i+n) = log((Paa + Pat)/(Pag + Pac));
     end
 end
 end
