@@ -13,7 +13,7 @@ dataTime = zeros(size(data));
 dataCurrent = zeros(size(data));
 
 for i = 1:length(data)
-    if data(i) == 0 || data(i) == -1
+    if data(i) == 0
         output = mvnrnd(muA,matrixA);
         dataTime(i) = output(1);
         dataCurrent(i) = output(2);

@@ -1,11 +1,11 @@
 clear
 addpath(genpath('Function'),genpath('ChannelData'),genpath('ParityMatrix'));
 matrix_file = "rate36Sep.mat"; %quater36rate, rate36Sep
-channelError = 0.95;
+channelError = 0.75;
 alpha = -1; %for average error model parameter, -1 means using the original channel
 bitDis = [0.25,0.25,0.25,0.25]; % distribution for A,T,C,G
-testNum = 60000;
-decodeMethod = 'method3'; %baseline, method1, method2, method3, method4, quater
+testNum = 100000;
+decodeMethod = 'method4'; %baseline, method1, method2, method3, method4, quater
 hardOrSoft = 'soft'; % hard, soft
 
 fprintf("%s, %s, channelError: %d, testNum: %d\n",decodeMethod,hardOrSoft, channelError, testNum);

@@ -100,12 +100,13 @@ for iter = 1:50
     end
     %-------------variable to check message------------------------------------
     for i = 1:n
+        
         nonZerosElementi1 = find(H1(:,i)~=0);
         nonZerosElementi2 = find(H2(:,i)~=0);
         sumi1 = sum(Lr1(:,i));
         sumi2 = sum(Lr2(:,i));
-        Lq1(nonZerosElementi1,i) = sumi1 - Lr1(nonZerosElementi1,i);
-        Lq2(nonZerosElementi2,i) = sumi2 - Lr2(nonZerosElementi2,i);
+        Lq1(nonZerosElementi1,i) = sumi1 - Lr1(nonZerosElementi1,i)+1.0e-10;
+        Lq2(nonZerosElementi2,i) = sumi2 - Lr2(nonZerosElementi2,i)+1.0e-10;
         sumi21 = maxStar(log(pdfA(i))+sumi2, log(pdfC(i))) - maxStar(log(pdfT(i))+sumi2, log(pdfG(i)));
         sumi12 = maxStar(log(pdfA(i))+sumi1, log(pdfT(i))) - maxStar(log(pdfC(i))+sumi1, log(pdfG(i)));
         Lq1(nonZerosElementi1,i) = Lq1(nonZerosElementi1,i)+sumi21;
