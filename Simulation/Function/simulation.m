@@ -94,7 +94,7 @@ for iter = 1:testNum
             %         bireceivedBits2 = step(hDec2, llr(n+1:end));
             [bireceivedBits1, bireceivedBits2]= baseline(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
         elseif decodeMethod == "method1"
-            [bireceivedBits1, bireceivedBits2]= method1Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
+            [bireceivedBits1, bireceivedBits2]= method1Soft(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,mu,matrix);
         elseif decodeMethod == "method2"
             [bireceivedBits1, bireceivedBits2]= method2Soft(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,mu,matrix);
         elseif decodeMethod == "method3"

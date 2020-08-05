@@ -1,4 +1,9 @@
-function [data1,data2] = method2Soft(llr1,llr2, H1,H2,receivedSignal,mu,matrix)
+%I use LLR and SPA to do the LDPC decode
+%reference
+%1.Channel code classical and Modern by W illiam E.Ryan and Shu Lin
+%Chapter5.4 
+%2. Maltab Document https://www.mathworks.com/help/comm/ref/ldpcdecoder.html
+function [data1,data2] = method2Soft(llr1, llr2, H1, H2,receivedSignal,mu,matrix)
 muA = mu(1:2);
 muC = mu(3:4);
 muT = mu(5:6);
@@ -32,7 +37,6 @@ for i = 1:length(llr1)
     Lq1(H1(:,i)==1,i) = p1(i);%initial variabl to check
     Lq2(H2(:,i)==1,i) = p2(i);%initial variabl to check
 end
-
 
 for i = 1:length(llr1)
     pdfA(i) = mvnpdf(receivedSignal(:,i)',muA,mA);
@@ -78,8 +82,8 @@ for iter = 1:50
             Pz0L2 = exp(-(sumi2)/2)/(1+exp(-(sumi2)))*exp((sumi2)/2);
             Pz1L1 = exp(-(sumi1)/2)/(1+exp(-(sumi1)))*exp(-(sumi1)/2);
             Pz0L1 = exp(-(sumi1)/2)/(1+exp(-(sumi1)))*exp((sumi1)/2);
-            sumi21 = log(((pdfA(i)/(pdfA(i) + pdfC(i)))*Pz0L2+(pdfT(i)/(pdfT(i) + pdfG(i)))*Pz1L2)/((pdfC(i)/((pdfC(i) + pdfA(i))))*Pz0L2+(pdfG(i)/(pdfG(i)+pdfT(i)))*Pz1L2));
-            sumi12 = log(((pdfA(i)/(pdfA(i) + pdfT(i)))*Pz0L1+(pdfC(i)/(pdfC(i) + pdfG(i)))*Pz1L1)/((pdfT(i)/((pdfT(i) + pdfA(i))))*Pz0L1+(pdfG(i)/(pdfG(i)+pdfC(i)))*Pz1L1));
+            sumi12 = log(((pdfA(i))/(pdfA(i)+pdfC(i))*Pz0L1+(pdfT(i)/(pdfG(i)+pdfT(i)))*Pz1L1)/(pdfC(i)/(pdfC(i)+pdfA(i))*Pz0L1+(pdfG(i)/(pdfG(i)+pdfT(i)))*Pz1L1));
+            sumi21 = log(((pdfA(i))/(pdfA(i)+pdfT(i))*Pz0L2+(pdfC(i)/(pdfC(i)+pdfG(i)))*Pz1L2)/(pdfT(i)/(pdfA(i)+pdfT(i))*Pz0L2+(pdfG(i)/(pdfC(i)+pdfG(i)))*Pz1L2));
             LQ1(i) = LQ1(i)+sumi21;
             LQ2(i) = LQ2(i)+sumi12;
         end
@@ -107,15 +111,15 @@ for iter = 1:50
         nonZerosElementi2 = find(H2(:,i)~=0);
         sumi1 = sum(Lr1(:,i));
         sumi2 = sum(Lr2(:,i));
-        Lq1(nonZerosElementi1,i) = p1(i) + sumi1 - Lr1(nonZerosElementi1,i);
-        Lq2(nonZerosElementi2,i) = p2(i) + sumi2 - Lr2(nonZerosElementi2,i);
+        Lq1(nonZerosElementi1,i) = p1(i)+sumi1- Lr1(nonZerosElementi1,i) + 1.0e-10;
+        Lq2(nonZerosElementi2,i) = p2(i)+sumi2- Lr2(nonZerosElementi2,i) + 1.0e-10;
         if (pdfT(i) > pdfA(i) && pdfT(i) > pdfG(i) && receivedSignal(2,i) < muG(2) &&  receivedSignal(1,i) < muA(1))
             Pz1L2 = exp(-(sumi2)/2)/(1+exp(-(sumi2)))*exp(-(sumi2)/2);
             Pz0L2 = exp(-(sumi2)/2)/(1+exp(-(sumi2)))*exp((sumi2)/2);
             Pz1L1 = exp(-(sumi1)/2)/(1+exp(-(sumi1)))*exp(-(sumi1)/2);
             Pz0L1 = exp(-(sumi1)/2)/(1+exp(-(sumi1)))*exp((sumi1)/2);
-            sumi21 = log(((pdfA(i)/(pdfA(i) + pdfC(i)))*Pz0L2+(pdfT(i)/(pdfT(i) + pdfG(i)))*Pz1L2)/((pdfC(i)/((pdfC(i) + pdfA(i))))*Pz0L2+(pdfG(i)/(pdfG(i)+pdfT(i)))*Pz1L2));
-            sumi12 = log(((pdfA(i)/(pdfA(i) + pdfT(i)))*Pz0L1+(pdfC(i)/(pdfC(i) + pdfG(i)))*Pz1L1)/((pdfT(i)/((pdfT(i) + pdfA(i))))*Pz0L1+(pdfG(i)/(pdfG(i)+pdfC(i)))*Pz1L1));
+            sumi12 = log(((pdfA(i))/(pdfA(i)+pdfC(i))*Pz0L1+(pdfT(i)/(pdfG(i)+pdfT(i)))*Pz1L1)/(pdfC(i)/(pdfC(i)+pdfA(i))*Pz0L1+(pdfG(i)/(pdfG(i)+pdfT(i)))*Pz1L1));
+            sumi21 = log(((pdfA(i))/(pdfA(i)+pdfT(i))*Pz0L2+(pdfC(i)/(pdfC(i)+pdfG(i)))*Pz1L2)/(pdfT(i)/(pdfA(i)+pdfT(i))*Pz0L2+(pdfG(i)/(pdfC(i)+pdfG(i)))*Pz1L2));
             Lq1(nonZerosElementi1,i) = Lq1(nonZerosElementi1,i)+sumi21;
             Lq2(nonZerosElementi2,i) = Lq2(nonZerosElementi2,i)+sumi12;
         end

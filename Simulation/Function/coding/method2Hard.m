@@ -60,8 +60,8 @@ for iter = 1:50
     for i = 1:n
         sumi1 = sum(Lr1(:,i));
         sumi2 = sum(Lr2(:,i));
-        LQ1(i) = p1(i) + sum(Lr1(:,i));
-        LQ2(i) = p2(i) + sum(Lr2(:,i));
+        LQ1(i) = p1(i) + sumi1;
+        LQ2(i) = p2(i) + sumi2;
         if (receivedSignal(i) == 1)
             Pz1L2 = exp(-(sumi2)/2)/(1+exp(-(sumi2)))*exp(-(sumi2)/2);
             Pz0L2 = exp(-(sumi2)/2)/(1+exp(-(sumi2)))*exp((sumi2)/2);
