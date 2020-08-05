@@ -1,6 +1,6 @@
 clear
 decodeMethod = 'method4'; % baseline, method1, method2, method3, method4
-channelError = 1.1;
+channelError = 1.29;
 fprintf("%s, channelError: %d\n",decodeMethod, channelError);
 
 errorModel = "data/testData" + num2str(channelError)+".mat";
@@ -12,15 +12,15 @@ capSoft = capSoft(matrix,mu);
 [chan1,chan2,P1,P2,checkMatrix] = pdfmSoft(matrix,mu,acc);
 ext = [-30 acc 2*edge+1];
 mapping = [-10 0.0002 50000];
-vard = [0,0,1];
-chkd = [0,0,0,0,0,1];
-dv = 3;
-dc = 6;
+% vard = [0,0,1];
+% chkd = [0,0,0,0,0,1];
+% dv = 3;
+% dc = 6;
 
-% vard = [0,0.4734,zeros(1,36),5.6316e-05,zeros(1,22),0.0020,zeros(1,37),0.5239];
-% chkd = [zeros(1,7),0.7188,0.2812];
-% dv = [2,39,62,100];
-% dc = [8,9];
+vard = [0,0.4734,zeros(1,36),5.6316e-05,zeros(1,22),0.0020,zeros(1,37),0.5239];
+chkd = [zeros(1,7),0.7188,0.2812];
+dv = 100;
+dc = 9;
 iter = 10000;
 stop_pe = 1e-10;
 sumvard = 0;

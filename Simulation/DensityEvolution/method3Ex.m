@@ -41,8 +41,30 @@ endDwellCur = 2;
 % end
 for  i = ext(1):ext(2):-ext(1)
     funPos = round(i/acc)+ edge +1;
-    Lu = pA(funPos) + pG(funPos);
-    Lu1 = pC(funPos) + pT(funPos);
+    if pA(funPos) == 0
+        %         pa = pA(2*edge+2 - funPos);
+        pdfA = 0.00000001;
+    else
+        pdfA = pA(funPos);
+    end
+    
+    if pC(funPos) == 0
+        pdfC = 0.00000001;
+    else
+        pdfC = pC(funPos);
+    end
+    if pT(funPos) == 0
+        pdfT = 0.00000001;
+    else
+        pdfT = pT(funPos);
+    end
+    if pG(funPos) == 0
+        pdfG = 0.00000001;
+    else
+        pdfG = pG(funPos);
+    end
+    Lu = pdfA + pdfG;
+    Lu1 = pdfC + pdfT;
     sumi2 = -i;
 %     if Lu == 0
 %         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
