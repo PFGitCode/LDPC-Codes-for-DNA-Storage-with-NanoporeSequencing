@@ -5,7 +5,7 @@ channelError = 0.95;
 alpha = -1; %for average error model parameter, -1 means using the original channel
 bitDis = [0.25,0.25,0.25,0.25]; % distribution for A,T,C,G
 testNum = 60000;
-decodeMethod = 'method3'; %baseline, method1, method2, method3, method4, quater
+decodeMethod = 'method2'; %baseline, method1, method2, method3, method4, quater
 hardOrSoft = 'soft'; % hard, soft
 
 fprintf("%s, %s, channelError: %d, testNum: %d\n",decodeMethod,hardOrSoft, channelError, testNum);
