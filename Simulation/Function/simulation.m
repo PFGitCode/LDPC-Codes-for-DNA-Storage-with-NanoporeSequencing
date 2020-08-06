@@ -115,7 +115,7 @@ for iter = 1:testNum
     error = sum(double(rawData) - double(receivedBits(1:strlen))~=0)/strlen;
     sumError = sumError+error;
     %     if error > 0
-    fprintf("%s, %s: %d\n",decodeMethod,hardOrSoft,iter);
+    fprintf("%s,%d, %s: %d\n",decodeMethod,alpha,hardOrSoft,iter);
     avgError = sumError/iter;
     avgTime = runningTime/iter;
     fprintf("error rate: %f,%f, %f\n",channelError,avgError, avgTime);
