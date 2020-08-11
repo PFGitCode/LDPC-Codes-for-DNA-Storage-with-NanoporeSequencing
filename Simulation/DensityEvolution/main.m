@@ -1,6 +1,6 @@
 clear
-decodeMethod = 'method2'; % baseline, method1, method2, method3, method4
-channelError = 0.9;
+decodeMethod = 'method4'; % baseline, method1, method2, method3, method4
+channelError = 1.29;
 fprintf("%s, channelError: %d\n",decodeMethod, channelError);
 
 errorModel = "data/testData" + num2str(channelError)+".mat";

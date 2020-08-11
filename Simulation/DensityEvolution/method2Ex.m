@@ -11,7 +11,7 @@ edge = abs(ext(1)/acc);
 extrinsic21 = zeros(1,sf1);
 for  i = ext(1):ext(2):-ext(1)
     funPos = round(i/acc)+ edge +1;
-    sumi2 = -i;
+    sumi2 = i;
     if pA(funPos) == 0
         %         pa = pA(2*edge+2 - funPos);
         pdfA = 0.00000001;

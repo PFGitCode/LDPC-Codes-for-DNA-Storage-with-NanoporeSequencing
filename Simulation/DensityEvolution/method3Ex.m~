@@ -17,7 +17,7 @@ endDwellCur = 2;
 %     for j = startCur:acc:endDwellCur
 %         yTime = i;
 %         yCurrent = j;
-%         
+%
 %         pdfA = mvnpdf([yTime,yCurrent],muA,mA);
 %         pdfT = mvnpdf([yTime,yCurrent],muT,mT);
 %         pdfC = mvnpdf([yTime,yCurrent],muC,mC);
@@ -41,23 +41,52 @@ endDwellCur = 2;
 % end
 for  i = ext(1):ext(2):-ext(1)
     funPos = round(i/acc)+ edge +1;
-    Lu = pA(funPos) + pG(funPos);
-    Lu1 = pC(funPos) + pT(funPos);
-    if Lu == 0
-                Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
-                Lu1 = pC(2*edge+2 - funPos) + pT(2*edge+2 - funPos);
-%         extrinsic21(funPos) = extrinsic21(funPos) + func2(funPos);
-%         continue;
+    if pA(funPos) == 0
+        %         pa = pA(2*edge+2 - funPos);
+        pdfA = 0.00000001;
+    else
+        pdfA = pA(funPos);
     end
+    
+    if pC(funPos) == 0
+        pdfC = 0.00000001;
+    else
+        pdfC = pC(funPos);
+    end
+    if pT(funPos) == 0
+        pdfT = 0.00000001;
+    else
+        pdfT = pT(funPos);
+    end
+    if pG(funPos) == 0
+        pdfG = 0.00000001;
+    else
+        pdfG = pG(funPos);
+    end
+    Lu = pdfA + pG(funPos);
+    Lu1 = pC(funPos) + pT(funPos);
+    sumi2 = -i;
+%     if Lu == 0
+%         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
+%         Lu1 = pC(2*edge+2 - funPos) + pT(2*edge+2 - funPos);
+% %         if bit == 1
+%             sumi2 = -sumi2;
+% %         end
+%         %         extrinsic21(funPos) = extrinsic21(funPos) + func2(funPos);
+%         %         continue;
+%     end
     lu = log(Lu/Lu1);
-    sumi2 = i;
     temp = tanh(0.5*(sumi2))*tanh(0.5*lu);
     if abs(temp) == 1
         sumi= 2*19.07*temp;
     else
         sumi = 2*atanh(temp);
     end
-    pos = round(sumi/acc)+ edge +1;
+%     if bit == 1
+        pos = round(sumi/acc)+ edge +1;
+%     else
+%         pos = round(-sumi/acc)+ edge +1;
+%     end
     %     luPos = round(j/acc)+ edge +1;
     %         if Lu == 0
     %         %         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
@@ -67,7 +96,8 @@ for  i = ext(1):ext(2):-ext(1)
     %     end
     extrinsic21(pos) = extrinsic21(pos) + func2(funPos);
 end
-
+% extrinsic21 = extrinsic21*0.5;
+% extrinsic21(edge+1) = extrinsic21(edge+1) + 0.5;
 zeropad1 = zeros(1,sf1 + sf1);
 zeropad2 = zeropad1;
 

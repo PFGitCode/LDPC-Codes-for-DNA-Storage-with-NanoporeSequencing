@@ -42,6 +42,7 @@ for i = 1 : n
     q(4,:,i) = P(4,i);
 end
 for iter = 1:50
+    tic
     for i  = 1:k
         nonZerosElement = nonZerosElements(i,:);
         nonZerosElement = nonZerosElement(nonZerosElement~=0);
@@ -99,6 +100,7 @@ for iter = 1:50
             q(4,nonZerosElement(i),j) = q(4,nonZerosElement(i),j)/qSum;
         end
     end
+    toc
 end
 % P0 = signma;
 end
