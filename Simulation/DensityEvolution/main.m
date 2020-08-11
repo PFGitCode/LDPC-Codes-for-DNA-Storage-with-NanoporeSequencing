@@ -1,6 +1,6 @@
 clear
 decodeMethod = 'method4'; % baseline, method1, method2, method3, method4
-channelError = 1.29;
+channelError = 1.35;
 fprintf("%s, channelError: %d\n",decodeMethod, channelError);
 
 errorModel = "data/testData" + num2str(channelError)+".mat";
@@ -18,6 +18,7 @@ mapping = [-10 0.0002 50000];
 % dc = 6;
 
 vard = [0,0.4734,zeros(1,36),5.6316e-05,zeros(1,22),0.0020,zeros(1,37),0.5239];
+% vard = [0,0.473355511675834,0.000712606992704412,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5.63165556257290e-05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.00198575241526479,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.523889812360572];
 chkd = [zeros(1,7),0.7188,0.2812];
 dv = 100;
 dc = 9;

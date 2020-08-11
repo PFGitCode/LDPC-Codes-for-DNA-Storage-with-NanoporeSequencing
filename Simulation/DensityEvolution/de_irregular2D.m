@@ -17,7 +17,7 @@ pe1 = 0.5;
 pe2 = 0.5;
 result_pe1 = zeros(1,iter);
 result_pe2 = zeros(1,iter);
-round(0.3);
+
 while ((c < iter) && ((pe1 > stop_pe)|| (pe2 > stop_pe)))
     c = c + 1;
     y_ave1=0;

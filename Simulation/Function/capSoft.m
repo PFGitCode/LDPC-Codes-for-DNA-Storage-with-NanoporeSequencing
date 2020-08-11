@@ -16,7 +16,7 @@ mvnpdf([yTime,yCurrent],muT,mT)/4 + mvnpdf([yTime,yCurrent],muG,mG)/4));
 % funyy = @(yTime,yCurrent) funy*log2(funy);
 % funy = @(yTime,yCurrent) 1/(sqrt(det(mA)*(2*pi)^2))*exp(-0.5*([yTime,yCurrent]-muA)*inv(mA)*([yTime,yCurrent]-muA)');
 % format long
-q = integral2(@(yTime,yCurrent)arrayfun(funy,yTime,yCurrent),-0.6,1,-0.2,1.5);
+q = integral2(@(yTime,yCurrent)arrayfun(funy,yTime,yCurrent),-5,5,-5,5);
 hy = -q;
 fy = (hyxFun(mA)+hyxFun(mC)+hyxFun(mT)+hyxFun(mG))/4;
 hyx = fy;
@@ -29,7 +29,7 @@ I = hy - hyx;
 end
 
 function fy = hyxFun(m)
-e = 2.71828;
+e = 2.7182818;
 fy = 0.5*log2((2*pi*e)^2*det(m));
 end
 

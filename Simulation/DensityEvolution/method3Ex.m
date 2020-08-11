@@ -66,15 +66,15 @@ for  i = ext(1):ext(2):-ext(1)
     Lu = pdfA + pdfG;
     Lu1 = pdfC + pdfT;
     sumi2 = -i;
-%     if Lu == 0
-%         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
-%         Lu1 = pC(2*edge+2 - funPos) + pT(2*edge+2 - funPos);
-% %         if bit == 1
-%             sumi2 = -sumi2;
-% %         end
-%         %         extrinsic21(funPos) = extrinsic21(funPos) + func2(funPos);
-%         %         continue;
-%     end
+    %     if Lu == 0
+    %         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
+    %         Lu1 = pC(2*edge+2 - funPos) + pT(2*edge+2 - funPos);
+    % %         if bit == 1
+    %             sumi2 = -sumi2;
+    % %         end
+    %         %         extrinsic21(funPos) = extrinsic21(funPos) + func2(funPos);
+    %         %         continue;
+    %     end
     lu = log(Lu/Lu1);
     temp = tanh(0.5*(sumi2))*tanh(0.5*lu);
     if abs(temp) == 1
@@ -82,11 +82,11 @@ for  i = ext(1):ext(2):-ext(1)
     else
         sumi = 2*atanh(temp);
     end
-%     if bit == 1
-        pos = round(sumi/acc)+ edge +1;
-%     else
-%         pos = round(-sumi/acc)+ edge +1;
-%     end
+    %     if bit == 1
+    pos = round(sumi/acc)+ edge +1;
+    %     else
+    %         pos = round(-sumi/acc)+ edge +1;
+    %     end
     %     luPos = round(j/acc)+ edge +1;
     %         if Lu == 0
     %         %         Lu = pA(2*edge+2 - funPos) + pG(2*edge+2 - funPos);
@@ -96,8 +96,8 @@ for  i = ext(1):ext(2):-ext(1)
     %     end
     extrinsic21(pos) = extrinsic21(pos) + func2(funPos);
 end
-% extrinsic21 = extrinsic21*0.5;
-% extrinsic21(edge+1) = extrinsic21(edge+1) + 0.5;
+extrinsic21 = extrinsic21*0.5;
+extrinsic21(edge+1) = extrinsic21(edge+1) + 0.5;
 zeropad1 = zeros(1,sf1 + sf1);
 zeropad2 = zeropad1;
 
