@@ -17,7 +17,7 @@ pe1 = 0.5;
 pe2 = 0.5;
 result_pe1 = zeros(1,iter);
 result_pe2 = zeros(1,iter);
-
+round(0.3);
 while ((c < iter) && ((pe1 > stop_pe)|| (pe2 > stop_pe)))
     c = c + 1;
     y_ave1=0;
@@ -58,8 +58,8 @@ while ((c < iter) && ((pe1 > stop_pe)|| (pe2 > stop_pe)))
         z1 = method1Ex(xvar_ave1,xvar_aveEX2,ext);
         z2 = method1Ex(xvar_ave2,xvar_aveEX1,ext);
     elseif decodeMethod == "method2"
-        z1 = method2Ex(xvar_ave1,xvar_aveEX2,ext,P2,1);
-        z2 = method2Ex(xvar_ave2,xvar_aveEX1,ext,P1,2);
+        z1 = method2Ex(xvar_ave1,xvar_aveEX2,ext,P2,2);
+        z2 = method2Ex(xvar_ave2,xvar_aveEX1,ext,P1,1);
     elseif decodeMethod == "method3"
         z1 = method3Ex(xvar_ave1,xvar_aveEX2,ext,P2);
         z2 = method3Ex(xvar_ave2,xvar_aveEX1,ext,P1);

@@ -19,6 +19,15 @@ p2C = zeros(1,2*edge+1);
 p2T = zeros(1,2*edge+1);
 p2G = zeros(1,2*edge+1);
 
+p1A_N = zeros(1,2*edge+1);
+p1C_N  = zeros(1,2*edge+1);
+p1T_N  = zeros(1,2*edge+1);
+p1G_N  = zeros(1,2*edge+1);
+p2A_N  = zeros(1,2*edge+1);
+p2C_N  = zeros(1,2*edge+1);
+p2T_N  = zeros(1,2*edge+1);
+p2G_N  = zeros(1,2*edge+1);
+
 chan1 = zeros(1,2*edge+1);
 chan2 = zeros(1,2*edge+1);
 % chan_lu = zeros(1,2*edge+1);
@@ -52,6 +61,8 @@ pro = 0;
 %         p1G(lr1) =  pdfG;
 %     end
 % end
+counter = 1;
+
 for i = startDwellTime:acc:endDwellTime
     for j = startCur:acc:endDwellCur
         sampleNumber = sampleNumber + 1;
@@ -83,26 +94,66 @@ for i = startDwellTime:acc:endDwellTime
         chan2(lr2) = chan2(lr2) + (pdfA + pdfT)*acc^2/4;
         chan2(nlr2) = chan2(nlr2) + (pdfC + pdfG)*acc^2/4;
         
+        p1A(lr1) =  p1A(lr1) + pdfA*acc^2/4;
+        p1C(lr1) =  p1C(lr1) +pdfC*acc^2/4;
+        p1T(lr1) =  p1T(lr1) +pdfT*acc^2/4;
+        p1G(lr1) =  p1G(lr1) +pdfG*acc^2/4;
+        
+        p1A(nlr1) =  p1A(nlr1) + pdfG*acc^2/4;
+        p1C(nlr1) =  p1C(nlr1) + pdfT*acc^2/4;
+        p1T(nlr1) =  p1T(nlr1) + pdfC*acc^2/4;
+        p1G(nlr1) =  p1G(nlr1) + pdfA*acc^2/4;
+        
+        p2A(lr2) =  p2A(lr2) + pdfA*acc^2/4;
+        p2C(lr2) =  p2C(lr2) + pdfC*acc^2/4;
+        p2T(lr2) =  p2T(lr2) + pdfT*acc^2/4;
+        p2G(lr2) =  p2G(lr2) + pdfG*acc^2/4;
+  
+        p2A(nlr2) =  p2A(nlr2) + pdfG*acc^2/4;
+        p2C(nlr2) =  p2C(nlr2) + pdfT*acc^2/4;
+        p2T(nlr2) =  p2T(nlr2) + pdfC*acc^2/4;
+        p2G(nlr2) =  p2G(nlr2) + pdfA*acc^2/4;
+        
+%         p1A_N(lr1) =  p1A_N(lr1) + 1;
+%         p1C_N(lr1) =  p1C_N(lr1) + 1;
+%         p1T_N(lr1) =  p1T_N(lr1) + 1;
+%         p1G_N(lr1) =  p1G_N(lr1) + 1;
+%         
+%         p1A_N(nlr1) =  p1A_N(nlr1) + 1;
+%         p1C_N(nlr1) =  p1C_N(nlr1) + 1;
+%         p1T_N(nlr1) =  p1T_N(nlr1) + 1;
+%         p1G_N(nlr1) =  p1G_N(nlr1) + 1;
+%         
+%         p2A_N(lr2) =  p2A_N(lr2) + 1;
+%         p2C_N(lr2) =  p2C_N(lr2) + 1;
+%         p2T_N(lr2) =  p2T_N(lr2) + 1;
+%         p2G_N(lr2) =  p2G_N(lr2) + 1;
+%   
+%         p2A_N(nlr2) =  p2A_N(nlr2) + 1;
+%         p2C_N(nlr2) =  p2C_N(nlr2) + 1;
+%         p2T_N(nlr2) =  p2T_N(nlr2) + 1;
+%         p2G_N(nlr2) =  p2G_N(nlr2) + 1;
+        
         p1A(lr1) =  pdfA;
         p1C(lr1) =  pdfC;
-        p1T(lr1) =  pdfT;
+        p1T(lr1) = pdfT;
         p1G(lr1) =  pdfG;
-
-        p1A(nlr1) =  pdfG;
+        
+        p1A(nlr1) = pdfG;
         p1C(nlr1) =  pdfT;
         p1T(nlr1) = pdfC;
         p1G(nlr1) =  pdfA;
-          
-        p2A(lr2) =  pdfA;
-        p2C(lr2) =  pdfC;
-        p2T(lr2) =  pdfT;
+        
+        p2A(lr2) = pdfA;
+        p2C(lr2) =   pdfC;
+        p2T(lr2) =   pdfT;
         p2G(lr2) =  pdfG;
         %         p2A(nlr2) =  pdfA;
         %         p2C(nlr2) =  pdfC;
         %         p2T(nlr2) =  pdfT;
         %         p2G(nlr2) =  pdfG;
-        p2A(nlr2) =  pdfG;
-        p2C(nlr2) = pdfT;
+        p2A(nlr2) =   pdfG;
+        p2C(nlr2) =  pdfT;
         p2T(nlr2) =  pdfC;
         p2G(nlr2) =  pdfA;
         %         chan_lu(lrlu) = chan_lu(lrlu) + (pdfA + pdfG)*acc^2/4;
@@ -118,6 +169,16 @@ end
 % Lu = Lu/sampleNumber;
 % Lu1 = Lu1/sampleNumber;
 % LuLLR = log(Lu/Lu1);
+% p1A = p1A./p1A_N;
+% p1C = p1C./p1C_N;
+% p1T = p1T./p1T_N;
+% p1G = p1G./p1G_N;
+% 
+% p2A = p2A./p2A_N;
+% p2C = p2C./p2C_N;
+% p2T = p2T./p2T_N;
+% p2G = p2G./p2G_N;
+
 P1 = [p1A; p1C; p1T;p1G];
 P2 = [p2A; p2C; p2T;p2G];
 end
