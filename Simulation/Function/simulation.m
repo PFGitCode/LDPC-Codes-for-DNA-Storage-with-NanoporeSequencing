@@ -50,7 +50,7 @@ sumError = 0;
 
 for iter = 1:testNum
     tic
-    rawData = (randsrc(n-k,1,[0,1,2,3;bitDis]))';
+    rawData = (randsrc(strlen,1,[0,1,2,3;bitDis]))';
     if  decodeMethod == "quater"
         encodedData = LDPC_Encoder(rawData,g);
     else
@@ -66,10 +66,10 @@ for iter = 1:testNum
         llr = hardLLR(receivedSignal, P);
         
         if decodeMethod == "baseline"
-            %         hDec1 = comm.LDPCDecoder(sparse(H1));
-            %         hDec2 = comm.LDPCDecoder(sparse(H2));
-            %         bireceivedBits1 = step(hDec1, llr(1:n));
-            %         bireceivedBits2 = step(hDec2, llr(n+1:end));
+%             hDec1 = comm.LDPCDecoder(sparse(H1));
+%             hDec2 = comm.LDPCDecoder(sparse(H2));
+%             bireceivedBits1 = step(hDec1, llr(1:n));
+%             bireceivedBits2 = step(hDec2, llr(n+1:end));
             [bireceivedBits1, bireceivedBits2]= baseline(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
         elseif decodeMethod == "method1"
             [bireceivedBits1, bireceivedBits2]= method1Hard(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
@@ -88,10 +88,10 @@ for iter = 1:testNum
         receivedSignal = [receivedSignalTime; receivedSignalCurrent];
         llr = GaussianLLR2D(receivedSignalTime,receivedSignalCurrent,mu,matrix);
         if decodeMethod == "baseline"
-            %         hDec1 = comm.LDPCDecoder(sparse(H1));
-            %         hDec2 = comm.LDPCDecoder(sparse(H2));
-            %         bireceivedBits1 = step(hDec1, llr(1:n));
-            %         bireceivedBits2 = step(hDec2, llr(n+1:end));
+%             hDec1 = comm.LDPCDecoder(sparse(H1));
+%             hDec2 = comm.LDPCDecoder(sparse(H2));
+%             bireceivedBits1 = step(hDec1, llr(1:n));
+%             bireceivedBits2 = step(hDec2, llr(n+1:end));
             [bireceivedBits1, bireceivedBits2]= baseline(llr(1:n),llr(n+1:end), H1,H2,receivedSignal);
         elseif decodeMethod == "method1"
             [bireceivedBits1, bireceivedBits2]= method1Soft(llr(1:n),llr(n+1:end), H1,H2,receivedSignal,mu,matrix);

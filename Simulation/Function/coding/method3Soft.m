@@ -28,14 +28,14 @@ pdfG = zeros(1,length(llr1));
 Lu = zeros(1,length(llr1));
 Lu1 = zeros(1,length(llr1));
 
-for i = 1:length(llr1)
+for i = 1:n
     p1(i) = llr1(i);%llr of p0 and p1
     p2(i) = llr2(i);%llr of p0 and p1
     Lq1(H1(:,i)==1,i) = p1(i);%initial variabl to check
     Lq2(H2(:,i)==1,i) = p2(i);%initial variabl to check
 end
 
-for i = 1:length(llr1)
+for i = 1:n
     pdfA(i) = mvnpdf(receivedSignal(:,i)',muA,mA);
     pdfC(i) = mvnpdf(receivedSignal(:,i)',muC,mC);
     pdfT(i) = mvnpdf(receivedSignal(:,i)',muT,mT);
